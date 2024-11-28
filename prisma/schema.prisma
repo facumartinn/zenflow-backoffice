@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Driver {
+  id            String    @id @default(uuid())
+  fullName      String
+  licenseNumber String    @unique
+  phone         String
+  email         String    @unique
+  status        Status    @default(AVAILABLE)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  routes        Route[]
+}
+
+model Order {
+  id              String    @id @default(uuid())
+  customerName    String
+  customerPhone   String
+  deliveryAddress String
+  products        Json
+  status          OrderStatus @default(PENDING)
+  latitude        Float
+  longitude       Float
+  route           Route?    @relation(fields: [routeId], references: [id])
+  routeId         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Route {
+  id        String    @id @default(uuid())
+  driver    Driver    @relation(fields: [driverId], references: [id])
+  driverId  String
+  status    RouteStatus @default(NOT_STARTED)
+  orders    Order[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Status {
+  AVAILABLE
+  BUSY
+}
+
+enum OrderStatus {
+  PENDING
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
+enum RouteStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}

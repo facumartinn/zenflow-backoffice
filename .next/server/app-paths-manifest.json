@@ -1,0 +1,8 @@
+{
+  "/api/drivers/route": "app/api/drivers/route.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(dashboard)/orders/page": "app/(dashboard)/orders/page.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/drivers/page": "app/(dashboard)/drivers/page.js",
+  "/(dashboard)/routes/page": "app/(dashboard)/routes/page.js"
+}
